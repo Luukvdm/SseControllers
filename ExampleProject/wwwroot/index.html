@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SSE example</title>
+</head>
+<body>
+<h1>SSE Example</h1>
+<p>
+    Checkout the javascript docs <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventSource" target="_blank">here</a>
+</p>
+<p>
+    <label>Notification:</label>
+    <input type="text" name="notification" id="noti-input">
+    <input value="Submit" type="submit" onclick="sendNotification()">
+</p>
+
+<ul id="notification-list">
+    
+</ul>
+
+<script type="text/javascript">
+function sendNotification(){
+    let msg = document.getElementById("noti-input").value;
+    console.log(msg);
+    let obj = { "notification": msg }
+   
+    let request = new XMLHttpRequest(); 
+    request.open("POST", "notification/create", true);
+    request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send(JSON.stringify(obj));
+}
+
+var es = new EventSource("notification/stream");
+
+/* The event "message" is a special case, as it
+   * will capture events without an event field
+   * as well as events that have the specific type
+   * `event: message` It will not trigger on any
+   * other event type.
+   */
+es.addEventListener("message", event => {
+    let recNoti = event.data;
+    
+    const notiList = document.getElementById("notification-list");
+    const newItem = document.createElement("li");
+    newItem.textContent = "Notification: " + recNoti;
+    notiList.appendChild(newItem);
+});
+
+</script>
+</body>
+</html>
