@@ -12,7 +12,7 @@ public class ClientEvent : IClientEvent
         Data = data;
     }
 
-    public ClientEvent(string type, string data) : this(type, new List<string> {data}) { }
+    public ClientEvent(string type, string data) : this(type, new List<string> { data }) { }
 
     public ClientEvent(string type, IList<string> data)
     {
@@ -22,7 +22,7 @@ public class ClientEvent : IClientEvent
 
     public ClientEvent(string data)
     {
-        Data = new List<string> {data};
+        Data = new List<string> { data };
     }
 
     public string Id { get; set; }

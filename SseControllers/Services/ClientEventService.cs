@@ -3,10 +3,8 @@ using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
 using SseControllers.Interfaces;
 
 namespace SseControllers.Services;
@@ -42,7 +40,8 @@ public class ClientEventService : IClientEventService
     {
         for (int i = 0; i < _options.ReconnectAttempts; i++)
         {
-            _logger.LogInformation("Reconnect attempt {Reconnect attempt}" + "/{Max reconnect attempts}", i, _options.ReconnectAttempts);
+            _logger.LogInformation("Reconnect attempt {Reconnect attempt}" + "/{Max reconnect attempts}", i,
+                _options.ReconnectAttempts);
             // TODO how can we tell if this succeeds
             string msg = i + "\n";
             await _clients[clientId].SendDataAsync(msg, cancellationToken);

@@ -12,7 +12,7 @@ namespace SseControllers.Annotations;
 [AttributeUsage(AttributeTargets.Method)]
 public class HttpSseAttribute : HttpMethodAttribute, IResultFilter, IOrderedFilter, IApiResponseMetadataProvider
 {
-    private static readonly IEnumerable<string> _supportedMethods = new[] {"GET"};
+    private static readonly IEnumerable<string> _supportedMethods = new[] { "GET" };
 
     /// <summary>
     /// Creates a new <see cref="HttpSseAttribute"/>.
