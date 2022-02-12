@@ -42,7 +42,7 @@ public class ClientEventService : IClientEventService
     {
         for (int i = 0; i < _options.ReconnectAttempts; i++)
         {
-            _logger.LogInformation("Reconnect attempt " + i + "/" + _options.ReconnectAttempts);
+            _logger.LogInformation("Reconnect attempt {Reconnect attempt}" + "/{Max reconnect attempts}", i, _options.ReconnectAttempts);
             // TODO how can we tell if this succeeds
             string msg = i + "\n";
             await _clients[clientId].SendDataAsync(msg, cancellationToken);
@@ -59,7 +59,7 @@ public class ClientEventService : IClientEventService
 
     public Task SendEventAsync(IClientEvent msg, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("SSE event: {MessageType} {ClientCount}", msg.Type, _clients.Count);
+        _logger.LogTrace("SSE event: {MessageType} {ClientCount}", msg.Type, _clients.Count);
         var clientTasks = _clients.Select(client => client.Value.SendSseEventAsync(msg, cancellationToken))
             .ToList();
         return Task.WhenAll(clientTasks);
@@ -67,7 +67,7 @@ public class ClientEventService : IClientEventService
 
     public Task SendEventAsync(IClientEvent msg, Guid clientId, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Sending SSE to clientEventDispatcher id {clientId}");
+        _logger.LogTrace("Sending SSE to clientEventDispatcher id {Client ID}", clientId);
         return _clients[clientId].SendSseEventAsync(msg, cancellationToken);
     }
 }
