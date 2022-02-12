@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace SseControllers.Interfaces
+namespace SseControllers.Interfaces;
+
+public interface IClientEvent
 {
-    public interface IClientEvent
-    {
-        string Id { get; set; }
-        string Type { get; set; }
-        IList<string> Data { get; }
-    }
+    string Id { get; set; }
+    string Type { get; set; }
+    IList<string> Data { get; }
 }

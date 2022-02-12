@@ -4,27 +4,26 @@ using Microsoft.Extensions.Hosting;
 using SseControllers.Interfaces;
 using SseControllers.Services;
 
-namespace SseControllers
-{
-    public static class DependencyInjection
-    {
-        public static IServiceCollection AddSse(this IServiceCollection services, Action<SseControllersOptions> options)
-        {
-            services.Configure(options);
-            services.AddSingleton<IClientEventService, ClientEventService>();
-            services.AddSingleton<IHostedService, KeepAliveService>();
-            return services;
-        }
+namespace SseControllers;
 
-        public static IServiceCollection AddSse(this IServiceCollection services)
+public static class DependencyInjection
+{
+    public static IServiceCollection AddSse(this IServiceCollection services, Action<SseControllersOptions> options)
+    {
+        services.Configure(options);
+        services.AddSingleton<IClientEventService, ClientEventService>();
+        services.AddSingleton<IHostedService, KeepAliveService>();
+        return services;
+    }
+
+    public static IServiceCollection AddSse(this IServiceCollection services)
+    {
+        services.AddSse(options =>
         {
-            services.AddSse(options =>
-            {
-                options.ReconnectInterval = SseControllersOptions.DefaultReconnectInterval;
-                options.KeepAliveInterval = SseControllersOptions.DefaultKeepAliveInterval;
-                options.ReconnectAttempts = SseControllersOptions.DefaultReconnectAttempts;
-            });
-            return services;
-        }
+            options.ReconnectInterval = SseControllersOptions.DefaultReconnectInterval;
+            options.KeepAliveInterval = SseControllersOptions.DefaultKeepAliveInterval;
+            options.ReconnectAttempts = SseControllersOptions.DefaultReconnectAttempts;
+        });
+        return services;
     }
 }

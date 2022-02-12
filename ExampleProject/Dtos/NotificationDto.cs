@@ -1,7 +1,6 @@
-﻿namespace ExampleProject.Dtos
+﻿namespace ExampleProject.Dtos;
+
+public class NotificationDto
 {
-    public class NotificationDto
-    {
-        public string Notification { get; set; }
-    }
+    public string Notification { get; set; }
 }

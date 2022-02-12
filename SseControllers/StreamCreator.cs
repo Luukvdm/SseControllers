@@ -2,25 +2,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using SseControllers.Interfaces;
 
-namespace SseControllers
+namespace SseControllers;
+
+public static class StreamCreator
 {
-    public static class StreamCreator
+    public static async Task CreateStream(HttpResponse response, IClientEventService sseService)
     {
-        public static async Task CreateStream(HttpResponse response, IClientEventService sseService)
-        {
-            response.StatusCode = 200;
-            response.Headers.Add("Content-Type", "text/event-stream");
+        response.StatusCode = 200;
+        response.Headers.Add("Content-Type", "text/event-stream");
 
-            await response.Body.FlushAsync();
+        await response.Body.FlushAsync();
 
-            var client = new SseClient(response);
-            var clientId = sseService.AddClient(client);
+        var client = new SseClient(response);
+        var clientId = sseService.AddClient(client);
 
-            response.HttpContext.RequestAborted.WaitHandle.WaitOne();
+        response.HttpContext.RequestAborted.WaitHandle.WaitOne();
 
-            await sseService.AttemptReconnect(clientId);
+        await sseService.AttemptReconnect(clientId);
 
-            sseService.RemoveClient(clientId);
-        }
+        sseService.RemoveClient(clientId);
     }
 }

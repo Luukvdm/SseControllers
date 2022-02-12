@@ -2,12 +2,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace SseControllers.Interfaces
+namespace SseControllers.Interfaces;
+
+public interface ISseClient
 {
-    public interface ISseClient
-    {
-        public HttpResponse Response { get; }
-        Task SendDataAsync(string msg, CancellationToken cancellationToken);
-        Task SendSseEventAsync(IClientEvent msg, CancellationToken cancellationToken);
-    }
+    public HttpResponse Response { get; }
+    Task SendDataAsync(string msg, CancellationToken cancellationToken);
+    Task SendSseEventAsync(IClientEvent msg, CancellationToken cancellationToken);
 }
